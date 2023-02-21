@@ -13,7 +13,10 @@
 
 echo " massDns is working ( dns resolver )  " 
 
-puredns resolve all.txt -r  resolver.txt > dnsresolve-output-$1.txt # main mass out  put :)   # this is for saving the domain list in pure mode 
+puredns resolve all.txt -r  resolver.txt > dnsresolve-output-$1.txt # main mass out  put :)   # this is for saving the domain list in pure mode
+
+
+
 # ------------------------------------------------------------------------
  #ip proccess :) 
 
@@ -32,15 +35,23 @@ cat dnsresolve-output-$1.txt | httpx  -s -cdn > httpx-output-$1.txt
 
 cat  httpx-output-$1.txt | cut -d " " -f1 > live-$1.txt # this is main file 
 
+#------------------------------------------------------------------------
+#CDN chekc 
 
-cat httpx-output-$1.txt | grep  -v -E '\[\D*\]' > $1-CDNless.txt 
-len_cdnless=$( wc -l $1-CDNless.txt )
-if [len_cdnless != 0 ] ; then 
-	echo $len_cdnless "  of the domain's is not under the CDN aliorec is make list of this :) "
-else 
-	rm -rf $1-CDNless.txt 
-	echo " all of the subdomai's is under the CDN securly :) "
-fi 
+echo " the CDN check is Working : "
+
+cat httpx-output-$1.txt | grep  -v -E '\[\D*\]' > $1-CDNless.txt  
+
+
+# len_cdnless=$( wc -l $1-CDNless.txt | cut -d " " -f1  ) 	
+# count = len_cdnless
+# if [ ${len_cdnless::1} != "0" ] ; then 
+# 	echo $len_cdnless "  of the domain's is not under the CDN aliorec is make list of this :) "
+# else 
+# 	rm -rf $1-CDNless.txt 
+# 	echo " all of the subdomai's is under the CDN securly :) "
+# fi 
+
 
 #----------------------------------------------------------------------
 
